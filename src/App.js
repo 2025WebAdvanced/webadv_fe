@@ -7,6 +7,7 @@ import Post from './components/Post';
 import Login from './components/Login';
 import Register from './components/Register/Register'
 import List from './components/List/List';
+import NotFound from './components/NotFound/NotFound';
 
 import './App.css'
 
@@ -22,6 +23,7 @@ function App() {
           </Route>
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
+          <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </div>
