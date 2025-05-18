@@ -1,0 +1,61 @@
+.headerContainer {
+  width: 70vw;
+  height: 63px;
+  margin-top: 20px;
+  
+  min-width: 800px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  border-radius: 35px;
+  background-color: #c8e2f4;
+}
+
+.profileContainer {
+  width: 279px;
+  height: 57px;
+  margin-left: 3px;
+
+  display: flex;
+  justify-content: space-between;
+
+  border-radius: 35px;
+
+  background-color: #ECF7FF;
+  box-shadow: 0px 0px 10px -4px black;
+}
+
+.userContainer {
+  padding: 11px 0px 1px 28px;
+}
+
+.buttonContainer {
+  display: flex;
+  width: 140px;
+
+  align-items: center;
+}
+
+.buttonContainer > * {
+  cursor: pointer;
+}
+
+.linkButton {
+  width: 66px;
+  height: 47px;
+
+  border-radius: 13px;
+
+  margin-right: 14px;
+}
+
+.iconsContainer {
+  margin-right: 40px;
+}
+
+.iconsContainer > * {
+  cursor: pointer;
+  margin-left: 24px;
+}
