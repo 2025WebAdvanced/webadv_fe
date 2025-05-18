@@ -1,0 +1,39 @@
+.App {
+  width: 100vw;
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.bgPrimary {
+  background-color: #3A59D1;
+}
+
+.bgSecondary {
+  background-color: #3D90D7;
+}
+
+
+.r12 {
+  font-size: 12px;
+}
+
+.bold16 {
+  font-weight: 800;
+  font-size: 16px;
+}
+
+.linkText {
+  color: #3A59D1;
+  text-decoration-color: #3A59D1;
+}
+
+.linkButton {
+  background-color: #3A59D1;
+  border: 0px;
+  color: white;
+
+  font-weight: 800;
+}

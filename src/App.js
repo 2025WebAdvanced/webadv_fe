@@ -1,19 +1,27 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Main from './components/Main';
+import Header from './components/Header/Header';
+import Main from './components/Main/Main';
 import WritePost from './components/WritePost';
 import Post from './components/Post';
 import Login from './components/Login';
+import Register from './components/Register/Register'
+import List from './components/List/List';
+
+import './App.css'
 
 function App() {
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Main />}></Route>
-          <Route path='/write' element={<WritePost />}></Route>
-          <Route path='/post' element={<Post />}></Route>
-          <Route path='/login' element={<Login />}></Route>
+          <Route element={<Main />}>
+            <Route path='/board' element={<List />} />
+            <Route path='/board/write' element={<WritePost />} />
+            <Route path='/board/*' element={<Post />} />
+          </Route>
+          <Route path='/register' element={<Register />} />
+          <Route path='/login' element={<Login />} />
         </Routes>
       </BrowserRouter>
     </div>
