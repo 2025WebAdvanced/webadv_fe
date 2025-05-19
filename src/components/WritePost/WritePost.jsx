@@ -2,10 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./WritePost.css";
 
-export default function WritePost() {
+export default function WritePost(props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [userId] = useState("byd1234");
   const navigate = useNavigate();
 
   // 입력 핸들러
@@ -14,18 +13,22 @@ export default function WritePost() {
 
   // 게시 기능
   const handleSubmit = () => {
-    const posts = JSON.parse(localStorage.getItem("posts") || "[]");
-    posts.push({
-      id: Date.now(),
-      title,
-      content,
-      author: userId,
-      date: new Date().toISOString(),
-    });
-    localStorage.setItem("posts", JSON.stringify(posts));
-    navigate("/");
+    fetch('http://localhost:8080/post', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        'title': title,
+        'content': content,
+        'userId': 1,
+      }),
+    })
+      .then(res => res.json())
+      .then(res => {
+        navigate(`/post/${res.postId}`);
+      });
   };
-
 
   return (
     <div className="write-post-container">
