@@ -60,7 +60,7 @@ button {
 
 .title-input {
   flex: 1;
-  padding: 12px;
+  padding: 12px 20px;
   font-size: 16px;
   border: 1px solid #ddd;
   border-radius: 5px;
