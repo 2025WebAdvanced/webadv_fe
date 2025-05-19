@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Main from './components/Main/Main';
-import WritePost from './components/WritePost';
+import WritePost from './components/WritePost/WritePost';
 import Post from './components/Post';
 import Login from './components/Login';
 import Register from './components/Register/Register';
