@@ -1,11 +1,10 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Header from './components/Header/Header';
 import Main from './components/Main/Main';
 import WritePost from './components/WritePost';
 import Post from './components/Post';
 import Login from './components/Login';
-import Register from './components/Register/Register'
+import Register from './components/Register/Register';
 import List from './components/List/List';
 import NotFound from './components/NotFound/NotFound';
 
