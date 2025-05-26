@@ -1,0 +1,99 @@
+.join-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.join-content {
+  width: 100%;
+  max-width: 600px;
+  padding: 50px;
+  background-color: #ffffff;
+}
+
+.join-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.join-form {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #444;
+  font-size: 1.1rem;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 20px 18px;
+  border: 1.5px solid #ddd;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  min-height: 60px;
+  box-sizing: border-box;
+  transition: all 0.2s ease-in-out;
+}
+
+.input-group input:focus {
+  outline: none;
+  border-color: #4e7eff;
+  background-color: #f0f4ff;
+}
+
+.error {
+  border-color: #ff4d4f !important;
+  background-color: #fff0f0;
+}
+
+.error-msg {
+  color: #ff4d4f;
+  font-size: 0.875rem;
+  margin-top: 8px;
+}
+
+.join-button {
+  width: 100%;
+  padding: 20px;
+  border: none;
+  background-color: #4e7eff;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  min-height: 60px;
+  box-sizing: border-box;
+  transition: background-color 0.2s ease;
+}
+
+.join-button:hover {
+  background-color: #375ee0;
+}
+
+@media (max-width: 768px) {
+  .join-content {
+    max-width: 90%;
+    padding: 30px;
+  }
+  
+  .input-group input {
+    padding: 16px 14px;
+    min-height: 50px;
+  }
+  
+  .join-button {
+    padding: 16px;
+    min-height: 50px;
+    font-size: 1.1rem;
+  }
+}
