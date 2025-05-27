@@ -10,7 +10,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const loginUser = async () => {
-    await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -22,29 +22,27 @@ export default function Login() {
     })
       .then(res => res.json())
       .then(res => {
-        console.log(res);
-        if (!res.ok) {
-          setError('로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.');
-          console.error('로그인 에러:', error);
+        if (res.code !== 1001) {
+          const errorMsg = '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.';
+          setError(errorMsg);
+          console.error('로그인 에러:', errorMsg);
         }
-        return res;
+        else {
+          localStorage.setItem('accessToken', res.accessToken);
+          localStorage.setItem('refreshToken', res.refreshToken);
+          navigate('/board');
+        }
       });
   };
-
-  const handleClick = async () => {
+  const handleClick = () => {
     setError('');
 
     if (!email || !password) {
       setError('아이디와 비밀번호를 모두 입력해주세요.');
       return;
     }
-    const data = await loginUser();
-    
-    if (!error) {
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      navigate('/board');
-    }
+
+    loginUser();
   };
 
   return (
@@ -70,7 +68,7 @@ export default function Login() {
         <button className="login-button" onClick={handleClick}>
           로그인
         </button>
-        <div class='register-link'><a href="/register">회원가입</a></div>
+        <div className='register-link'><a href="/register">회원가입</a></div>
       </div>
     </div>
   );
