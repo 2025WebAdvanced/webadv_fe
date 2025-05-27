@@ -7,7 +7,6 @@ import Login from './components/Login/Login';
 import Register from './components/Register/Register';
 import List from './components/List/List';
 import NotFound from './components/NotFound/NotFound';
-import Join from './components/Join/Join';
 
 
 import './App.css'
@@ -24,7 +23,6 @@ function App() {
           </Route>
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
-          <Route path='/join' element={<Join />}/>
           <Route path='*' element={<NotFound />} />
         </Routes>
       </BrowserRouter>
