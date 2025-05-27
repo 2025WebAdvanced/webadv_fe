@@ -6,11 +6,15 @@ export default function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
+    username: "",
+    univ: "",
     password: "",
     confirmPassword: ""
   });
   const [errors, setErrors] = useState({
     email: "",
+    username: "",
+    univ: "",
     password: "",
     confirm: ""
   });
@@ -32,6 +36,26 @@ export default function Register() {
     return true;
   };
 
+  // 닉네임 검증
+  const validateUsername = () => {
+    if (formData.username.length < 3 || formData.username.length > 25) {
+      setErrors(prev => ({ ...prev, username: "3~25자로 입력해주세요" }));
+      return false;
+    }
+    setErrors(prev => ({ ...prev, username: "" }));
+    return true;
+  }
+
+  // 대학교 검증
+  const validateUniv = () => {
+    if (formData.univ.length <= 0 || formData.univ.endsWith('대학교')) {
+      setErrors(prev => ({ ...prev, univ: "'대학교'로 끝나야 합니다." }));
+      return false;
+    }
+    setErrors(prev => ({ ...prev, univ: "" }));
+    return true;
+  }
+
   // 비밀번호 검증
   const validatePassword = () => {
     if (formData.password.length < 8 || formData.password.length > 15) {
@@ -50,13 +74,14 @@ export default function Register() {
     if (formData.password !== formData.confirmPassword) {
       setErrors(prev => ({ ...prev, confirm: "비밀번호가 일치하지 않습니다" }));
       return;
+    } else {
+      setErrors(prev => ({ ...prev, confirm: "" }));
     }
-
     try {
-      const res = await fetch('http://localhost:8080/auth/register', {
+      const res = await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/signup`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       if (!res.ok) {
@@ -67,7 +92,7 @@ export default function Register() {
         throw new Error(data.message);
       }
       
-      alert("회원가입 성공!");
+      alert("회원가입에 성공하였습니다! 로그인 해주세요.");
       navigate("/login");
     } catch (err) {
       console.error("회원가입 오류:", err);
@@ -75,57 +100,77 @@ export default function Register() {
   };
 
   return (
-    <div className="join-container">
-      <div className="join-content">
-        <h2 className="join-title">게시판</h2>
+    <div className="register-container">
+      <h2>게시판 회원가입</h2>
+      <form className="register-form" onSubmit={handleSubmit}>
+        <div className="input-group">
+          <label>이메일</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="example@board.com"
+            value={formData.email}
+            onChange={handleChange}
+            onBlur={validateEmail}
+            className={errors.email ? 'error' : ''}
+          />
+          {errors.email && <span className="error-msg">{errors.email}</span>}
+        </div>
+        <div className="input-group">
+          <label>닉네임</label>
+          <input 
+            type="username"
+            name="username"
+            placeholder="닉네임"
+            value={formData.username}
+            onChange={handleChange}
+            onBlur={validateUsername}
+            className={errors.username ? 'error' : ''}
+          />
+        </div>
+        <div className="input-group">
+          <label>대학교</label>
+          <input 
+            type="univ"
+            name="univ"
+            placeholder="경성대학교"
+            value={formData.univ}
+            onChange={handleChange}
+            onBlur={validateUniv}
+            className={errors.univ ? 'error' : ''}
+          />
+        </div>
+        <div className="input-group">
+          <label>비밀번호</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="password"
+            value={formData.password}
+            onChange={handleChange}
+            onBlur={validatePassword}
+            className={errors.password ? 'error' : ''}
+          />
+          {errors.password && <span className="error-msg">{errors.password}</span>}
+        </div>
 
-        <form className="join-form" onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>아이디</label>
-            <input
-              type="email"
-              name="email"
-              placeholder="email"
-              value={formData.email}
-              onChange={handleChange}
-              onBlur={validateEmail}
-              className={errors.email ? 'error' : ''}
-            />
-            {errors.email && <span className="error-msg">{errors.email}</span>}
-          </div>
+        <div className="input-group">
+          <label>비밀번호 확인</label>
+          <input
+            type="password"
+            name="confirmPassword"
+            placeholder="password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            className={errors.confirm ? 'error' : ''}
+          />
+          {errors.confirm && <span className="error-msg">{errors.confirm}</span>}
+        </div>
 
-          <div className="input-group">
-            <label>비밀번호</label>
-            <input
-              type="password"
-              name="password"
-              placeholder="password"
-              value={formData.password}
-              onChange={handleChange}
-              onBlur={validatePassword}
-              className={errors.password ? 'error' : ''}
-            />
-            {errors.password && <span className="error-msg">{errors.password}</span>}
-          </div>
-
-          <div className="input-group">
-            <label>비밀번호 확인</label>
-            <input
-              type="password"
-              name="confirmPassword"
-              placeholder="password"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              className={errors.confirm ? 'error' : ''}
-            />
-            {errors.confirm && <span className="error-msg">{errors.confirm}</span>}
-          </div>
-
-          <button type="submit" className="join-button">
-            회원가입
-          </button>
-        </form>
-      </div>
+        <button type="submit" className="join-button">
+          회원가입
+        </button>
+      </form>
     </div>
   );
 }
