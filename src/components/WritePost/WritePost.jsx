@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./WritePost.css";
+import reissueToken from "../../global/refreshToken";
 
 export default function WritePost(props) {
   const [title, setTitle] = useState("");
@@ -11,16 +12,22 @@ export default function WritePost(props) {
   const handleContentChange = (e) => setContent(e.target.value);
 
   const handleSubmit = () => {
-    fetch('http://localhost:8080/post', {
+    fetch(`${process.env.REACT_APP_SERVER_URL}/post`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': localStorage.getItem('accessToken'),
+      },
       body: JSON.stringify({
         'title': title,
         'content': content,
-        'userId': 1,
       }),
     }).then(res => res.json())
-      .then(res => navigate(`/post/${res.postId}`));
+      .then(async (res) => {
+        if (res.code === 4010)
+          await reissueToken(handleSubmit);
+        navigate(`/post/${res.postId}`);
+      });
   };
 
   return (
