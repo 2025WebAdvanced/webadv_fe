@@ -9,7 +9,6 @@ import List from './components/List/List';
 import NotFound from './components/NotFound/NotFound';
 import Join from './components/Join/Join';
 
-
 import './App.css'
 
 function App() {
