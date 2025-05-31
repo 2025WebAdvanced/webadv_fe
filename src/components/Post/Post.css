@@ -163,3 +163,16 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.edit-button {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.edit-button img {
+  width: 24px; /* 또는 20~32px 네가 원하는 크기 */
+  height: 24px;
+  object-fit: contain;
+}
