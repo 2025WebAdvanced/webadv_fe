@@ -38,8 +38,8 @@ export default function Register() {
 
   // 닉네임 검증
   const validateUsername = () => {
-    if (formData.username.length < 3 || formData.username.length > 25) {
-      setErrors(prev => ({ ...prev, username: "3~25자로 입력해주세요" }));
+    if (formData.username.length < 2 || formData.username.length > 25) {
+      setErrors(prev => ({ ...prev, username: "2~25자로 입력해주세요" }));
       return false;
     }
     setErrors(prev => ({ ...prev, username: "" }));
@@ -48,7 +48,7 @@ export default function Register() {
 
   // 대학교 검증
   const validateUniv = () => {
-    if (formData.univ.length <= 0 || formData.univ.endsWith('대학교')) {
+    if (formData.univ.length <= 0 || !formData.univ.endsWith('대학교')) {
       setErrors(prev => ({ ...prev, univ: "'대학교'로 끝나야 합니다." }));
       return false;
     }
@@ -70,7 +70,7 @@ export default function Register() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     
-    if (!validateEmail() | !validatePassword()) return;
+    if (!validateEmail() || !validateUniv() || !validateUsername() || !validatePassword()) return;
     if (formData.password !== formData.confirmPassword) {
       setErrors(prev => ({ ...prev, confirm: "비밀번호가 일치하지 않습니다" }));
       return;
@@ -127,6 +127,7 @@ export default function Register() {
             onBlur={validateUsername}
             className={errors.username ? 'error' : ''}
           />
+          {errors.username && <span className="error-msg">{errors.username}</span>}
         </div>
         <div className="input-group">
           <label>대학교</label>
@@ -139,6 +140,7 @@ export default function Register() {
             onBlur={validateUniv}
             className={errors.univ ? 'error' : ''}
           />
+          {errors.univ && <span className="error-msg">{errors.univ}</span>}
         </div>
         <div className="input-group">
           <label>비밀번호</label>
