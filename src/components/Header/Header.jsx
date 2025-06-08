@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { FaGithub, FaEdit, FaHome } from "react-icons/fa";
 import './Header.css';
 
 export default function Header(props) {
-
   const navigate = useNavigate();
 
   const linkHandler = (src) => {
@@ -15,17 +14,26 @@ export default function Header(props) {
     window.open(src)
   }
 
+  const logoutHandler = () => {
+
+  }
+
   return (
     <div className="headerContainer">
       <div className="profileContainer">
         <div className="userContainer">
-          <div className="bold16">{props.isLogggedIn ? props.username : '익명의 사용자'}</div>
-          <div className="r12">{props.isLogggedIn ? props.univ : '로그인하세요'}</div>
+          <div className="bold16">{props.user?.username || "익명의 사용자"}</div>
+          <div className="r12">{props.user?.univ || "로그인하세요"}</div>
         </div>
-        <div className="buttonContainer">
-          <button className="linkButton" onClick={() => linkHandler('/login')}>로그인</button>
-          <Link to='/register' className="linkText r12">회원가입</Link>
-        </div>
+        { props.user ?
+          <div>
+            <button className="linkButton logoutButton" onClick={logoutHandler}>로그아웃</button>
+          </div> :
+          <div className="buttonContainer">
+            <button className="linkButton" onClick={() => linkHandler('/login')}>로그인</button>
+            <Link to='/register' className="linkText r12">회원가입</Link>
+          </div>
+        }
       </div>
       <div className="iconsContainer">
         <FaHome 
