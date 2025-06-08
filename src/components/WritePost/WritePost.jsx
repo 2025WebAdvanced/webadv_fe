@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./WritePost.css";
-import reissueToken from "../../global/refreshToken";
+import reissueToken from "../../global/reissueToken";
 
 export default function WritePost(props) {
   const [title, setTitle] = useState("");
@@ -42,10 +42,12 @@ export default function WritePost(props) {
             placeholder="제목을 입력하세요."
             value={title}
             onChange={handleTitleChange}
+            tabIndex={1}
           />
           <button 
             className="write-post-submit-btn" 
             onClick={handleSubmit}
+            tabIndex={3}
           >
             게시
           </button>
@@ -56,6 +58,7 @@ export default function WritePost(props) {
           placeholder="내용을 입력하세요"
           value={content}
           onChange={handleContentChange}
+          tabIndex={2}
         />
       </div>
     </div>
