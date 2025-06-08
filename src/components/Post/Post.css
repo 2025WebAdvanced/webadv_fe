@@ -1,12 +1,127 @@
 .post-container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 25px;
-  background-color: #ffffff;
-  border-radius: 8px;
-  
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 0;
+  background-color: #fff;
+  border-radius: 10px;
+  box-sizing: border-box;
 }
 
+/* --- 수정/작성 화면 --- */
+
+
+.edit-page-title {
+  font-size: 22px;
+  font-weight: bold;
+  color: #222;
+  margin-bottom: 18px;
+  margin-left: 2px;
+}
+
+.edit-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.edit-title-input {
+  flex: 1;
+  font-size: 16px;
+  padding: 8px 12px;
+  border: 1.5px solid #000000;
+  border-radius: 6px;
+  background: #ffffff;
+  outline: none;
+  box-sizing: border-box;
+  height: 38px;
+}
+
+.save-btn {
+  background: #3a59d1;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 32px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.save-btn:hover {
+  background: #2d47a6;
+}
+
+.cancel-btn {
+  background: #f5f5f5;
+  color: #888;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 32px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: not-allowed;
+  transition: background 0.2s;
+}
+
+.cancel-btn:hover {
+  background: #e0e0e0;
+}
+
+.edit-content-input {
+  width: 100%;
+  min-height: 500px;
+  font-size: 15px;
+  padding: 12px;
+  border: 1.5px solid #000000;
+  border-radius: 6px;
+  background: #ffffff;
+  box-sizing: border-box;
+  resize: none;
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+
+
+/* --- 모달 등 기타 기존 스타일 --- */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  border-radius: 10px;
+  padding: 32px 28px 24px 28px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.12);
+  min-width: 400px;
+  text-align: center;
+}
+
+.modal-content p {
+  margin: 0 0 20px 0;
+  color: #222;
+  font-size: 18px;
+}
+
+.modal-content button {
+  padding: 8px 28px;
+  background: #3a59d1;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* --- 상세/댓글 화면용 기존 스타일 --- */
 .post-header {
   display: flex;
   justify-content: space-between;
@@ -91,20 +206,6 @@
   transform: scale(1.1);
 }
 
-.delete-button {
-  padding: 8px 20px;
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.delete-button:hover {
-  background-color: #ff3333;
-}
-
 .comment-header {
   display: flex;
   align-items: center;
@@ -163,3 +264,11 @@
   border-radius: 4px;
   cursor: pointer;
 }
+
+.deleted-message {
+  padding: 80px 0;
+  text-align: center;
+  font-size: 20px;
+  color: #888;
+}
+
