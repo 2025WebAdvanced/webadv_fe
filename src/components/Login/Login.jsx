@@ -20,19 +20,21 @@ export default function Login() {
         password: password,
       }),
     })
-      .then(res => res.json())
-      .then(res => {
-        if (res.code !== 1001) {
+        .then(res => {
+          if (!res.ok)
+            throw new Error(res.statusText);
+          return res.json();
+        })
+        .then(res => {
+            localStorage.setItem('accessToken', res.accessToken);
+            localStorage.setItem('refreshToken', res.refreshToken);
+            navigate('/board');
+        })
+        .catch((err) => {
           const errorMsg = '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.';
           setError(errorMsg);
-          console.error('로그인 에러:', errorMsg);
-        }
-        else {
-          localStorage.setItem('accessToken', res.accessToken);
-          localStorage.setItem('refreshToken', res.refreshToken);
-          navigate('/board');
-        }
-      });
+          console.error('로그인 에러:', err.statusMessage);
+        });
   };
   const handleClick = () => {
     setError('');
