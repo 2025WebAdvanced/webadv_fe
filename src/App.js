@@ -17,7 +17,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route element={<Main />}>
-            <Route path='/board' element={<List />} />
+            <Route path='/' element={<List />} />
             <Route path='/board/write' element={<WritePost />} />
             <Route path='/board/*' element={<Post />} />
             <Route path='profile' element={<Profile />} />
