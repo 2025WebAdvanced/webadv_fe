@@ -6,8 +6,7 @@ export default function Profile() {
   const navigate = useNavigate();
   const { user, setUser, getUserDetail } = useOutletContext();
   const [mode, setMode] = useState('view'); // 'view', 'edit', 'password'
-  const [profile, setProfile] = useState({ ...user });
-  const [editProfile, setEditProfile] = useState({ ...profile });
+  const [editProfile, setEditProfile] = useState({ ...user });
   const [passwordForm, setPasswordForm] = useState({
     current: '',
     next: '',
@@ -16,13 +15,13 @@ export default function Profile() {
   const [pwError, setPwError] = useState('');
 
   useEffect(() => {
-    setProfile(user);
+    setEditProfile(user);
   }, [user])
 
   // 프로필 수정 완료
   const handleEditComplete = (e) => {
     e.preventDefault();
-    setProfile(editProfile);
+    setUser(editProfile);
     setMode('view');
   };
 
@@ -78,19 +77,19 @@ export default function Profile() {
               <tbody>
                 <tr>
                   <td className="profile-label">이메일</td>
-                  <td className="profile-value">{profile.email}</td>
+                  <td className="profile-value">{user.email}</td>
                 </tr>
                 <tr>
                   <td className="profile-label">닉네임</td>
-                  <td className="profile-value">{profile.username}</td>
+                  <td className="profile-value">{user.username}</td>
                 </tr>
                 <tr>
                   <td className="profile-label">학교</td>
-                  <td className="profile-value">{profile.univ}</td>
+                  <td className="profile-value">{user.univ}</td>
                 </tr>
               </tbody>
             </table>
-            <button className="profile-btn-main" onClick={() => { setEditProfile(profile); setMode('edit'); }}>
+            <button className="profile-btn-main" onClick={() => { setEditProfile(user); setMode('edit'); }}>
               수정
             </button>
           </>
