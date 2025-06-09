@@ -32,6 +32,7 @@ export default function Register() {
   const [isTimer, setIsTimer] = useState(false);
   const [count, setCount] = useState(300);
   const [isChecked, setIsChecked] = useState(false);
+  const [verifyCode, setVerifyCode] = useState(null);
 
   // 타이머 효과
   React.useEffect(() => {
@@ -43,9 +44,6 @@ export default function Register() {
 
   // 입력 변경 핸들러
   const handleChange = (e) => {
-    if (isGetCode)
-      return;
-
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -120,6 +118,7 @@ export default function Register() {
           setCount(300);
           setIsChecked(false);
           alert("인증코드가 이메일로 발송되었습니다.");
+          setVerifyCode(res.verifyCode);
         })
         .catch(err => {
           console.log(err);
@@ -129,14 +128,12 @@ export default function Register() {
   // 인증코드 확인
   const onValidCode = async (e) => {
     e.preventDefault();
-    // 실제 인증코드 확인 API 호출 필요
-    // 예시: 성공시
-    if (formData.emailCode === "1234") { // 실제로는 서버 검증 필요
+    if (formData.emailCode.toString() === verifyCode) {
       setIsChecked(true);
       setIsTimer(false);
       alert("이메일 인증이 완료되었습니다.");
     } else {
-      alert("인증번호가 일치 하지 않습니다.");
+      alert("인증번호가 일치하지 않습니다.");
     }
   };
 
