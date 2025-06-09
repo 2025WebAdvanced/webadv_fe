@@ -43,6 +43,9 @@ export default function Register() {
 
   // 입력 변경 핸들러
   const handleChange = (e) => {
+    if (isGetCode)
+      return;
+
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
@@ -96,12 +99,31 @@ export default function Register() {
   // 이메일 인증코드 발송
   const handleSendCode = async () => {
     if (!validateEmail()) return;
-    // 실제 이메일 인증코드 발송 API 호출 필요
-    setIsGetCode(true);
-    setIsTimer(true);
-    setCount(300);
-    setIsChecked(false);
-    alert("인증코드가 이메일로 발송되었습니다.");
+
+    await fetch(`${process.env.REACT_APP_SERVER_URL}/auth/mailVerify`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        "email": formData.email,
+      }),
+    })
+        .then(res => {
+          if (!res.ok)
+            throw new Error(res.statusText);
+          return res.json();
+        })
+        .then(res => {
+          setIsGetCode(true);
+          setIsTimer(true);
+          setCount(300);
+          setIsChecked(false);
+          alert("인증코드가 이메일로 발송되었습니다.");
+        })
+        .catch(err => {
+          console.log(err);
+        })
   };
 
   // 인증코드 확인
@@ -170,7 +192,7 @@ export default function Register() {
               onChange={handleChange}
               onBlur={validateEmail}
               className={errors.email ? 'error' : ''}
-              disabled={isChecked}
+              disabled={isChecked || isGetCode}
             />
             <button
               type="button"
@@ -178,7 +200,7 @@ export default function Register() {
               onClick={handleSendCode}
               disabled={isChecked}
             >
-              확인
+              { isGetCode ? "재발송": "확인" }
             </button>
           </div>
           {errors.email && <span className="error-msg">{errors.email}</span>}
