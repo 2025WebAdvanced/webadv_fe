@@ -8,8 +8,8 @@ export default async function reissueToken(next) {
   })
       .then(res => res.json())
       .then(res => {
-          localStorage.setItem('accessToken', res.accessToken);
-          localStorage.setItem('refreshToken', res.refreshToken);
+          localStorage.setItem('accessToken', res.data.accessToken);
+          localStorage.setItem('refreshToken', res.data.refreshToken);
           next && next();
       })
       .catch( err => {
