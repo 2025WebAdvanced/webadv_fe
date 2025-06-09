@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./WritePost.css";
 import reissueToken from "../../global/reissueToken";
@@ -7,6 +7,13 @@ export default function WritePost(props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!localStorage.getItem("accessToken")) {
+      alert("로그인한 사용자만 게시글을 작성할 수 있습니다. 로그인 후 이용해 주세요");
+      navigate('/login');
+    }
+  }, []);
 
   const handleTitleChange = (e) => setTitle(e.target.value);
   const handleContentChange = (e) => setContent(e.target.value);
