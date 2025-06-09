@@ -1,20 +1,22 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useOutletContext } from 'react-router-dom';
 import './Profile.css';
 
 export default function Profile() {
+  const { user, setUser, getUserDetail } = useOutletContext();
   const [mode, setMode] = useState('view'); // 'view', 'edit', 'password'
-  const [profile, setProfile] = useState({
-    email: 'example@board.com',
-    nickname: '닉네임',
-    school: '대학교',
-  });
-  const [editProfile, setEditProfile] = useState(profile);
+  const [profile, setProfile] = useState({ ...user });
+  const [editProfile, setEditProfile] = useState({ ...profile });
   const [passwordForm, setPasswordForm] = useState({
     current: '',
     next: '',
     confirm: '',
   });
   const [pwError, setPwError] = useState('');
+
+  useEffect(() => {
+    setProfile(user);
+  }, [user])
 
   // 프로필 수정 완료
   const handleEditComplete = (e) => {
@@ -62,11 +64,11 @@ export default function Profile() {
                 </tr>
                 <tr>
                   <td className="profile-label">닉네임</td>
-                  <td className="profile-value">{profile.nickname}</td>
+                  <td className="profile-value">{profile.username}</td>
                 </tr>
                 <tr>
                   <td className="profile-label">학교</td>
-                  <td className="profile-value">{profile.school}</td>
+                  <td className="profile-value">{profile.univ}</td>
                 </tr>
               </tbody>
             </table>
@@ -95,8 +97,8 @@ export default function Profile() {
                 <input
                   className="profile-input"
                   type="text"
-                  value={editProfile.nickname}
-                  onChange={e => setEditProfile({ ...editProfile, nickname: e.target.value })}
+                  value={editProfile.username}
+                  onChange={e => setEditProfile({ ...editProfile, username: e.target.value })}
                 />
               </label>
               <label className="profile-edit-label">
@@ -104,8 +106,8 @@ export default function Profile() {
                 <input
                   className="profile-input"
                   type="text"
-                  value={editProfile.school}
-                  onChange={e => setEditProfile({ ...editProfile, school: e.target.value })}
+                  value={editProfile.univ}
+                  onChange={e => setEditProfile({ ...editProfile, univ: e.target.value })}
                 />
               </label>
               <button

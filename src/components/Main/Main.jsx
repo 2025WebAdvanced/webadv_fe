@@ -18,22 +18,18 @@ export default function Main() {
         'authorization': localStorage.getItem('accessToken'),
       },
     })
+        .then(res => res.json())
         .then(res => {
-          if (!res.ok)
-            throw new Error(res.statusText);
-          return res.json();
-        })
-        .then(res => {
-          setUser({
-            id: res.data.id,
-            username: res.data.username,
-            univ: res.data.univ,
-          });
-        })
-        .catch(err => {
-          console.log(err);
-          reissueToken();
-        })
+          if (res.code === 1014)
+            setUser({
+              id: res.data.id,
+              email: res.data.email,
+              username: res.data.username,
+              univ: res.data.univ,
+            });
+          else if (res.code === 4010)
+            reissueToken(getUserDetail);
+        });
   }
 
   return (
@@ -43,10 +39,10 @@ export default function Main() {
           setUser={setUser}
           getUserDetail={getUserDetail}
       />
-      <Outlet
-          user={user}
-          getUserDetail={getUserDetail}
-      />
+      { user ?
+        <Outlet context={{ user, setUser, getUserDetail }} />
+          : <div>Loading</div>
+      }
     </div>
   );
 }
