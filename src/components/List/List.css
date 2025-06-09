@@ -1,7 +1,7 @@
 .list-wrap {
-  width: 80vw;
-  max-width: 1200px;
-  min-width: 320px;
+  width: 70vw;
+  min-width: 800px;
+
   margin: 40px auto; /* 가운데 정렬 */
   background: #fff;
   border-radius: 8px;
@@ -43,8 +43,7 @@
 
 .list-table {
   width: 100%; /* 80vw는 .list-wrap에서 이미 적용됨 */
-  max-width: 1200px;
-  min-width: 320px;
+  min-width: 800px;
   margin: 0 auto; /* 가운데 정렬 */
 }
 
