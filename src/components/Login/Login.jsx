@@ -28,7 +28,7 @@ export default function Login() {
         .then(res => {
             localStorage.setItem('accessToken', res.accessToken);
             localStorage.setItem('refreshToken', res.refreshToken);
-            navigate(-1);
+            navigate('/board');
         })
         .catch((err) => {
           const errorMsg = '로그인에 실패했습니다. 이메일과 비밀번호를 확인해주세요.';
