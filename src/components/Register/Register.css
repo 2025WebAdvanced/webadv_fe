@@ -108,6 +108,13 @@
 }
 
 /* 인증코드 입력 + 확인 버튼 가로 정렬 */
+.label-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .code-row {
   display: flex;
   flex-direction: row;
@@ -157,7 +164,5 @@
   color: #475be8;
   min-width: 48px;
   text-align: center;
-  height: 50px;
-  display: flex;
-  align-items: center;
+  margin-right: 11px;
 }
