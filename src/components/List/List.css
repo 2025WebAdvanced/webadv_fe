@@ -1,0 +1,167 @@
+.list-wrap {
+  width: 80vw;
+  max-width: 1200px;
+  min-width: 320px;
+  margin: 40px auto; /* 가운데 정렬 */
+  background: #fff;
+  border-radius: 8px;
+  padding: 0 0 30px 0;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.list-tabs {
+  display: flex;
+  border-bottom: 2px solid #eee;
+  background: #fafbfc;
+  border-radius: 8px 8px 0 0;
+  width: 100%;
+}
+
+.list-tabs button {
+  flex: 1;
+  padding: 18px 0;
+  font-size: 18px;
+  border: none;
+  background: none;
+  color: #888;
+  font-weight: 500;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: color 0.2s, border-bottom 0.2s;
+}
+
+.list-tabs button.active {
+  color: #222;
+  border-bottom: 2.5px solid #222;
+  font-weight: 700;
+  background: #fff;
+}
+
+.list-content {
+  padding: 25px 0 0 0; /* 좌우 padding 제거 */
+}
+
+.list-table {
+  width: 100%; /* 80vw는 .list-wrap에서 이미 적용됨 */
+  max-width: 1200px;
+  min-width: 320px;
+  margin: 0 auto; /* 가운데 정렬 */
+}
+
+.list-header,
+.list-row {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+}
+
+.list-header {
+  color: #999;
+  font-weight: 700;
+  border-bottom: 2px solid #eee;
+  padding: 10px 0 8px 0;
+}
+
+.list-row {
+  border-bottom: 1px solid #f2f2f2;
+  padding: 16px 0;
+  color: #222;
+}
+
+.list-header > div,
+.list-row > div {
+  text-align: center;
+}
+
+/* 비율: 작성자(10%) 제목(50%) 날짜(15%) 조회(12.5%) 댓글(12.5%) */
+.list-header > div:nth-child(1),
+.list-row > div:nth-child(1) { width: 10%; min-width: 60px; }
+.list-header > div.title,
+.list-row > div.title { width: 50%; min-width: 180px; text-align: left; padding-left: 10px; }
+.list-header > div:nth-child(3),
+.list-row > div:nth-child(3) { width: 15%; min-width: 80px; }
+.list-header > div:nth-child(4),
+.list-row > div:nth-child(4) { width: 12.5%; min-width: 60px; }
+.list-header > div:nth-child(5),
+.list-row > div:nth-child(5) { width: 12.5%; min-width: 60px; }
+
+.list-empty {
+  text-align: center;
+  color: #bbb;
+  padding: 40px 0;
+  font-size: 17px;
+}
+
+.comment-row {
+  flex-direction: column;
+  align-items: stretch;
+  position: relative;
+}
+
+.comment-row > div:not(.my-comment) {
+  display: inline-block;
+}
+
+.comment-row .title {
+  text-align: left;
+}
+
+.my-comment {
+  background: #f8f8f8;
+  margin: 14px 0 0 0;
+  border-radius: 6px;
+  padding: 12px 16px;
+  font-size: 15px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.my-comment-label {
+  background: #555;
+  color: #fff;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-size: 13px;
+  margin-right: 6px;
+}
+
+.my-comment-date {
+  color: #aaa;
+  font-size: 13px;
+  margin-left: auto;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 24px 0 0 0;
+  gap: 3px;
+}
+
+.pagination button {
+  border: none;
+  background: #f3f3f3;
+  padding: 7px 13px;
+  border-radius: 4px;
+  color: #666;
+  cursor: pointer;
+  font-size: 15px;
+  margin: 0 1px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.pagination button.active,
+.pagination button:hover {
+  background: #222;
+  color: #fff;
+  font-weight: 700;
+}
+
+.pagination button:disabled {
+  background: #eee;
+  color: #bbb;
+  cursor: not-allowed;
+}
