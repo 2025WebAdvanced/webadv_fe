@@ -187,7 +187,12 @@ export default function Register() {
         {/* 인증코드 입력란 */}
         {isGetCode && (
           <div className="input-group code-group">
-            <label>인증코드</label>
+            <div className="label-row">
+              <label>인증코드</label>
+              {isTimer && !isChecked ? (
+                <Timer count={count} setCount={setCount} />
+              ) : null}
+            </div>
             <div className="code-row">
               <input
                 name="emailCode"
@@ -198,9 +203,6 @@ export default function Register() {
                 disabled={isChecked}
                 maxLength={4}
               />
-              {isTimer && !isChecked ? (
-                <Timer count={count} setCount={setCount} />
-              ) : null}
               <button
                 className="codeCheckBtn"
                 onClick={onValidCode}
