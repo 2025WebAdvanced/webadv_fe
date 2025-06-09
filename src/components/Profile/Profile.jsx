@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { useOutletContext } from 'react-router-dom';
+import { useNavigate, useOutletContext } from 'react-router-dom';
 import './Profile.css';
 
 export default function Profile() {
+  const navigate = useNavigate();
   const { user, setUser, getUserDetail } = useOutletContext();
   const [mode, setMode] = useState('view'); // 'view', 'edit', 'password'
   const [profile, setProfile] = useState({ ...user });
@@ -44,10 +45,27 @@ export default function Profile() {
 
   // 회원 탈퇴
   const handleWithdraw = () => {
-    if (window.confirm('정말로 회원을 탈퇴하시겠습니까?')) {
-      // 실제 회원 탈퇴 로직 필요
-      alert('회원 탈퇴가 완료되었습니다.');
-    }
+    const passwordConfirm = window.prompt('회원 탈퇴하려면 비밀번호를 입력해 주세요.');
+    fetch(`${process.env.REACT_APP_SERVER_URL}/auth/withdrawal`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': localStorage.getItem('accessToken'),
+      },
+      body: JSON.stringify({
+        'password': passwordConfirm,
+      }),
+    })
+        .then(res => res.json())
+        .then(res => {
+          if (res.code === 1901)
+            alert('비밀번호가 일치하지 않습니다. 다시 시도하세요.');
+          else if (res.code === 1003) {
+            setUser(null);
+            alert('탈퇴했습니다.');
+            navigate('/board');
+          }
+        });
   };
 
   return (
