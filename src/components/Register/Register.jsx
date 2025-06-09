@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Register.css";
 
+// 타이머 컴포넌트
+function Timer({ count }) {
+  const min = String(Math.floor(count / 60)).padStart(2, '0');
+  const sec = String(count % 60).padStart(2, '0');
+  return <div className="timer">{min}:{sec}</div>;
+}
+
 export default function Register() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -9,7 +16,8 @@ export default function Register() {
     username: "",
     univ: "",
     password: "",
-    confirmPassword: ""
+    confirmPassword: "",
+    emailCode: ""
   });
   const [errors, setErrors] = useState({
     email: "",
@@ -19,10 +27,29 @@ export default function Register() {
     confirm: ""
   });
 
+  // 이메일 인증 관련 상태
+  const [isGetCode, setIsGetCode] = useState(false);
+  const [isTimer, setIsTimer] = useState(false);
+  const [count, setCount] = useState(300);
+  const [isChecked, setIsChecked] = useState(false);
+
+  // 타이머 효과
+  React.useEffect(() => {
+    if (isTimer && count > 0 && !isChecked) {
+      const timer = setTimeout(() => setCount(count - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isTimer, count, isChecked]);
+
   // 입력 변경 핸들러
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  // 이메일 인증코드 입력 핸들러
+  const handleEmailCode = (e) => {
+    setFormData(prev => ({ ...prev, emailCode: e.target.value }));
   };
 
   // 이메일 검증
@@ -66,11 +93,39 @@ export default function Register() {
     return true;
   };
 
+  // 이메일 인증코드 발송
+  const handleSendCode = async () => {
+    if (!validateEmail()) return;
+    // 실제 이메일 인증코드 발송 API 호출 필요
+    setIsGetCode(true);
+    setIsTimer(true);
+    setCount(300);
+    setIsChecked(false);
+    alert("인증코드가 이메일로 발송되었습니다.");
+  };
+
+  // 인증코드 확인
+  const onValidCode = async (e) => {
+    e.preventDefault();
+    // 실제 인증코드 확인 API 호출 필요
+    // 예시: 성공시
+    if (formData.emailCode === "1234") { // 실제로는 서버 검증 필요
+      setIsChecked(true);
+      setIsTimer(false);
+      alert("이메일 인증이 완료되었습니다.");
+    } else {
+      alert("인증번호가 일치 하지 않습니다.");
+    }
+  };
+
   // 회원가입 처리
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (!validateEmail() || !validateUniv() || !validateUsername() || !validatePassword()) return;
+    if (!isChecked) {
+      alert("이메일 인증을 완료해 주세요.");
+      return;
+    }
     if (formData.password !== formData.confirmPassword) {
       setErrors(prev => ({ ...prev, confirm: "비밀번호가 일치하지 않습니다" }));
       return;
@@ -103,23 +158,65 @@ export default function Register() {
     <div className="register-container">
       <h2>게시판 회원가입</h2>
       <form className="register-form" onSubmit={handleSubmit}>
-        <div className="input-group">
+        {/* 이메일 입력란 + 확인 버튼 */}
+        <div className="input-group email-group">
           <label>이메일</label>
-          <input
-            type="email"
-            name="email"
-            placeholder="example@board.com"
-            value={formData.email}
-            onChange={handleChange}
-            onBlur={validateEmail}
-            className={errors.email ? 'error' : ''}
-          />
+          <div className="email-row">
+            <input
+              type="email"
+              name="email"
+              placeholder="example@board.com"
+              value={formData.email}
+              onChange={handleChange}
+              onBlur={validateEmail}
+              className={errors.email ? 'error' : ''}
+              disabled={isChecked}
+            />
+            <button
+              type="button"
+              className="email-check-btn"
+              onClick={handleSendCode}
+              disabled={isChecked}
+            >
+              확인
+            </button>
+          </div>
           {errors.email && <span className="error-msg">{errors.email}</span>}
         </div>
+
+        {/* 인증코드 입력란 */}
+        {isGetCode && (
+          <div className="input-group code-group">
+            <label>인증코드</label>
+            <div className="code-row">
+              <input
+                name="emailCode"
+                value={formData.emailCode}
+                className="codeInput"
+                placeholder="인증코드 4자리를 입력해주세요"
+                onChange={handleEmailCode}
+                disabled={isChecked}
+                maxLength={4}
+              />
+              {isTimer && !isChecked ? (
+                <Timer count={count} setCount={setCount} />
+              ) : null}
+              <button
+                className="codeCheckBtn"
+                onClick={onValidCode}
+                disabled={isChecked || !(formData.emailCode && formData.emailCode.length >= 4)}
+                type="button"
+              >
+                확인
+              </button>
+            </div>
+          </div>
+        )}
+
         <div className="input-group">
           <label>닉네임</label>
           <input 
-            type="username"
+            type="text"
             name="username"
             placeholder="닉네임"
             value={formData.username}
@@ -132,7 +229,7 @@ export default function Register() {
         <div className="input-group">
           <label>대학교</label>
           <input 
-            type="univ"
+            type="text"
             name="univ"
             placeholder="경성대학교"
             value={formData.univ}
@@ -155,7 +252,6 @@ export default function Register() {
           />
           {errors.password && <span className="error-msg">{errors.password}</span>}
         </div>
-
         <div className="input-group">
           <label>비밀번호 확인</label>
           <input
@@ -168,7 +264,6 @@ export default function Register() {
           />
           {errors.confirm && <span className="error-msg">{errors.confirm}</span>}
         </div>
-
         <button type="submit" className="join-button">
           회원가입
         </button>
