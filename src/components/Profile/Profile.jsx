@@ -4,7 +4,7 @@ import './Profile.css';
 
 export default function Profile() {
   const navigate = useNavigate();
-  const { user, setUser, getUserDetail } = useOutletContext();
+  const { user, setUser } = useOutletContext();
   const [mode, setMode] = useState('view'); // 'view', 'edit', 'password'
   const [editProfile, setEditProfile] = useState({ ...user });
   const [passwordForm, setPasswordForm] = useState({
