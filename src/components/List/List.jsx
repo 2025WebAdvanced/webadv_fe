@@ -1,14 +1,40 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./List.css";
 
 export default function List() {
   const [activeTab, setActiveTab] = useState(0);
   const [page, setPage] = useState(1);
 
-  // 실제 데이터는 API, context, redux 등에서 받아온다고 가정
-  const posts = [];      // 자유게시판 글 목록
-  const myPosts = [];    // 내가 쓴 글 목록
-  const myComments = []; // 내가 쓴 댓글 [{ post: {}, comment: {} }]
+  // 데이터 상태
+  const [posts, setPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState([]);
+  const [myComments, setMyComments] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  // 탭 변경시 페이지 초기화 및 데이터 fetch
+  useEffect(() => {
+    setPage(1);
+    setLoading(true);
+
+    let url = "";
+    if (activeTab === 0) url = "/api/posts";
+    else if (activeTab === 1) url = "/api/my-posts";
+    else if (activeTab === 2) url = "/api/my-comments";
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => {
+        if (activeTab === 0) setPosts(data);
+        else if (activeTab === 1) setMyPosts(data);
+        else if (activeTab === 2) setMyComments(data);
+      })
+      .catch(() => {
+        if (activeTab === 0) setPosts([]);
+        else if (activeTab === 1) setMyPosts([]);
+        else if (activeTab === 2) setMyComments([]);
+      })
+      .finally(() => setLoading(false));
+  }, [activeTab]);
 
   // 한 페이지에 5개씩
   const postsPerPage = 5;
@@ -16,12 +42,6 @@ export default function List() {
     data.slice((page - 1) * postsPerPage, page * postsPerPage);
   const getPageCount = (data) =>
     Math.ceil(data.length / postsPerPage) || 1;
-
-  // 탭 변경시 페이지 초기화
-  const handleTabClick = (idx) => {
-    setActiveTab(idx);
-    setPage(1);
-  };
 
   const renderPosts = (data) => (
     <div className="list-table">
@@ -32,16 +52,19 @@ export default function List() {
         <div>조회</div>
         <div>댓글</div>
       </div>
-      {getPageData(data).map((post) => (
-        <div className="list-row" key={post.id}>
-          <div>{post.author}</div>
-          <div className="title">{post.title}</div>
-          <div>{post.date}</div>
-          <div>{post.views}</div>
-          <div>{post.comments}</div>
-        </div>
-      ))}
-      {data.length === 0 && (
+      {loading ? (
+        <div className="list-empty">로딩 중...</div>
+      ) : getPageData(data).length > 0 ? (
+        getPageData(data).map((post) => (
+          <div className="list-row" key={post.id}>
+            <div>{post.author}</div>
+            <div className="title">{post.title}</div>
+            <div>{post.date}</div>
+            <div>{post.views}</div>
+            <div>{post.comments}</div>
+          </div>
+        ))
+      ) : (
         <div className="list-empty">게시글이 없습니다.</div>
       )}
       <Pagination
@@ -61,21 +84,24 @@ export default function List() {
         <div>조회</div>
         <div>댓글</div>
       </div>
-      {getPageData(myComments).map((item, idx) => (
-        <div className="list-row comment-row" key={idx}>
-          <div>{item.post.author}</div>
-          <div className="title">{item.post.title}</div>
-          <div>{item.post.date}</div>
-          <div>{item.post.views}</div>
-          <div>{item.post.comments}</div>
-          <div className="my-comment">
-            <span className="my-comment-label">내 댓글</span>
-            <span className="my-comment-text">{item.comment.text}</span>
-            <span className="my-comment-date">{item.comment.date}</span>
+      {loading ? (
+        <div className="list-empty">로딩 중...</div>
+      ) : getPageData(myComments).length > 0 ? (
+        getPageData(myComments).map((item, idx) => (
+          <div className="list-row comment-row" key={idx}>
+            <div>{item.post.author}</div>
+            <div className="title">{item.post.title}</div>
+            <div>{item.post.date}</div>
+            <div>{item.post.views}</div>
+            <div>{item.post.comments}</div>
+            <div className="my-comment">
+              <span className="my-comment-label">내 댓글</span>
+              <span className="my-comment-text">{item.comment.text}</span>
+              <span className="my-comment-date">{item.comment.date}</span>
+            </div>
           </div>
-        </div>
-      ))}
-      {myComments.length === 0 && (
+        ))
+      ) : (
         <div className="list-empty">작성한 댓글이 없습니다.</div>
       )}
       <Pagination
@@ -85,6 +111,10 @@ export default function List() {
       />
     </div>
   );
+
+  const handleTabClick = (idx) => {
+    setActiveTab(idx);
+  };
 
   return (
     <div className="list-wrap">
