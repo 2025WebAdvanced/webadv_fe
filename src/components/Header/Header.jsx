@@ -1,4 +1,3 @@
-import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 import { FaGithub, FaEdit, FaHome } from "react-icons/fa";
 import './Header.css';
@@ -15,7 +14,28 @@ export default function Header(props) {
   }
 
   const logoutHandler = () => {
-
+    fetch(`${process.env.REACT_APP_SERVER_URL}/auth/logout`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'authorization': localStorage.getItem('accessToken'),
+      },
+      body: JSON.stringify({
+        'refresh': localStorage.getItem('refreshToken'),
+      }),
+    })
+        .then(res => {
+          if (!res.ok)
+            throw new Error(res.statusText);
+          return res.json();
+        })
+        .then(res => {
+          localStorage.removeItem('accessToken');
+          localStorage.removeItem('refreshToken');
+          props.setUser(null);
+          navigate('/board');
+        })
+        .catch(err => console.log(err));
   }
 
   return (

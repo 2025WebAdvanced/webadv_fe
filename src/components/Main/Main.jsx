@@ -40,6 +40,7 @@ export default function Main() {
     <div>
       <Header
           user={user}
+          setUser={setUser}
           getUserDetail={getUserDetail}
       />
       <Outlet
