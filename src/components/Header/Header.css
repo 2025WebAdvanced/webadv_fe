@@ -30,6 +30,7 @@
 
 .userContainer {
   padding-left: 28px;
+  cursor: pointer;
 }
 
 .buttonContainer {
