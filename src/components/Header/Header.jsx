@@ -41,7 +41,7 @@ export default function Header(props) {
   return (
     <div className="headerContainer">
       <div className="profileContainer">
-        <div className="userContainer">
+        <div className="userContainer" onClick={() => linkHandler('/profile')}>
           <div className="bold16">{props.user?.username || "익명의 사용자"}</div>
           <div className="r12">{props.user?.univ || "로그인하세요"}</div>
         </div>
