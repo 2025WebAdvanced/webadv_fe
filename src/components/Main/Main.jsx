@@ -39,10 +39,7 @@ export default function Main() {
           setUser={setUser}
           getUserDetail={getUserDetail}
       />
-      { user ?
-        <Outlet context={{ user, setUser, getUserDetail }} />
-          : <div>Loading</div>
-      }
+      <Outlet context={{ user, setUser, getUserDetail }} />
     </div>
   );
 }
