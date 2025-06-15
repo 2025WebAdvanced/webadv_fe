@@ -20,7 +20,7 @@ function App() {
             <Route path={'/'} element={<List />} />
             <Route path='/board' element={<List />} />
             <Route path='/board/write' element={<WritePost />} />
-            <Route path='/board/*' element={<Post />} />
+            <Route path='/board/:postId' element={<Post />} />
             <Route path='profile' element={<Profile />} />
           </Route>
           <Route path='/register' element={<Register />} />
