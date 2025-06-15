@@ -6,6 +6,9 @@ export default function Header(props) {
   const navigate = useNavigate();
 
   const linkHandler = (src) => {
+    if (src === '/profile' && !props.user)
+      return;
+
     navigate(src);
   }
 
