@@ -2,46 +2,51 @@ import React, { useState, useEffect } from "react";
 import "./List.css";
 
 export default function List() {
+  const [limit, setLimit] = useState(10);
   const [activeTab, setActiveTab] = useState(0);
   const [page, setPage] = useState(1);
 
   // 데이터 상태
-  const [posts, setPosts] = useState([]);
-  const [myPosts, setMyPosts] = useState([]);
-  const [myComments, setMyComments] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [posts, setPosts] = useState({});
+  const [myPosts, setMyPosts] = useState({});
+  const [myComments, setMyComments] = useState({});
+  const [loading, setLoading] = useState(true);
 
-  // 탭 변경시 페이지 초기화 및 데이터 fetch
   useEffect(() => {
-    setPage(1);
     setLoading(true);
-
-    let url = "";
-    if (activeTab === 0) url = "/api/posts";
-    else if (activeTab === 1) url = "/api/my-posts";
-    else if (activeTab === 2) url = "/api/my-comments";
-
-    fetch(url)
+    // 게시글 목록 조회
+    fetch(`${process.env.REACT_APP_SERVER_URL}/post/list?page=${page}&limit=${limit}`)
       .then((res) => res.json())
-      .then((data) => {
-        if (activeTab === 0) setPosts(data);
-        else if (activeTab === 1) setMyPosts(data);
-        else if (activeTab === 2) setMyComments(data);
-      })
-      .catch(() => {
-        if (activeTab === 0) setPosts([]);
-        else if (activeTab === 1) setMyPosts([]);
-        else if (activeTab === 2) setMyComments([]);
-      })
-      .finally(() => setLoading(false));
-  }, [activeTab]);
+      .then((res) => {
+        setPosts(res.data);
+        setLoading(false);
+      });
+  }, [page]);
 
-  // 한 페이지에 5개씩
-  const postsPerPage = 5;
-  const getPageData = (data) =>
-    data.slice((page - 1) * postsPerPage, page * postsPerPage);
-  const getPageCount = (data) =>
-    Math.ceil(data.length / postsPerPage) || 1;
+  const dateParser = (date) => {
+    let year = parseInt(date.substring(0, 4));
+    let month = parseInt(date.substring(5, 7)) - 1;
+    let day = parseInt(date.substring(8, 10));
+    let hour = parseInt(date.substring(11, 13)) + 9;  // 한국 시간 GMT+9
+    let minute = parseInt(date.substring(14, 16));
+    let second = parseInt(date.substring(17, 19));
+
+    const parsedDate = new Date(year, month, day, hour, minute, second);
+    const now = new Date();
+    const diffTime = now.getTime() - parsedDate.getTime();
+
+    if (diffTime / 1000 <= 60)
+      return `${Math.floor(diffTime / 1000)}초 전`;
+    else if (diffTime / (1000 * 60) <= 60)
+      return `${Math.floor(diffTime / (1000 * 60))}분 전`;
+    else if (diffTime / (1000 * 60 * 60) <= 24)
+      return `${Math.floor(diffTime / (1000 * 60 * 60))}시간 전`;
+    else if (parsedDate.getFullYear() === now.getFullYear()) {
+      return `${parsedDate.getMonth() + 1}월 ${parsedDate.getDate()}일`;
+    } else {
+      return `${parsedDate.getFullYear()}.${parsedDate.getMonth() + 1}.${parsedDate.getDate()}`;
+    }
+  }
 
   const renderPosts = (data) => (
     <div className="list-table">
@@ -54,12 +59,12 @@ export default function List() {
       </div>
       {loading ? (
         <div className="list-empty">로딩 중...</div>
-      ) : getPageData(data).length > 0 ? (
-        getPageData(data).map((post) => (
+      ) : data.totalPosts ? (
+        data.posts.map((post) => (
           <div className="list-row" key={post.id}>
-            <div>{post.author}</div>
+            <div>{post.username}</div>
             <div className="title">{post.title}</div>
-            <div>{post.date}</div>
+            <div className="date">{dateParser(post.createdAt)}</div>
             <div>{post.views}</div>
             <div>{post.comments}</div>
           </div>
@@ -70,7 +75,7 @@ export default function List() {
       <Pagination
         page={page}
         setPage={setPage}
-        pageCount={getPageCount(data)}
+        pageCount={data.totalPages}
       />
     </div>
   );
@@ -86,8 +91,8 @@ export default function List() {
       </div>
       {loading ? (
         <div className="list-empty">로딩 중...</div>
-      ) : getPageData(myComments).length > 0 ? (
-        getPageData(myComments).map((item, idx) => (
+      ) : myComments.data ? (
+        myComments.data.map((item, idx) => (
           <div className="list-row comment-row" key={idx}>
             <div>{item.post.author}</div>
             <div className="title">{item.post.title}</div>
@@ -107,7 +112,7 @@ export default function List() {
       <Pagination
         page={page}
         setPage={setPage}
-        pageCount={getPageCount(myComments)}
+        pageCount={myComments.totalPages}
       />
     </div>
   );
