@@ -1,7 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./List.css";
+import { useNavigate } from "react-router-dom";
 
 export default function List() {
+  const navigate = useNavigate();
+
   const [limit, setLimit] = useState(10);
   const [activeTab, setActiveTab] = useState(0);
   const [page, setPage] = useState(1);
@@ -48,6 +51,10 @@ export default function List() {
     }
   }
 
+  const postClickHandler = (p) => {
+    navigate(`/board/${p.id}`);
+  }
+
   const renderPosts = (data) => (
     <div className="list-table">
       <div className="list-header">
@@ -63,7 +70,7 @@ export default function List() {
         data.posts.map((post) => (
           <div className="list-row" key={post.id}>
             <div>{post.username}</div>
-            <div className="title">{post.title}</div>
+            <div className="title" onClick={() => { postClickHandler(post) }}>{post.title}</div>
             <div className="date">{dateParser(post.createdAt)}</div>
             <div>{post.views}</div>
             <div>{post.comments}</div>
