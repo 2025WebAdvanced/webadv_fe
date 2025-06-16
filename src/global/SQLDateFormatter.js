@@ -10,6 +10,9 @@ function DateForm(date) {
 export function sqlDateToRelativeTimeString(date) {
   const dateform = new DateForm(date);
 
+  if (!dateform.second)
+    return null;
+
   const parsedDate = new Date(dateform.year, dateform.month, dateform.day, dateform.hour, dateform.minute, dateform.second);
   const now = new Date();
   const diffTime = now.getTime() - parsedDate.getTime();
