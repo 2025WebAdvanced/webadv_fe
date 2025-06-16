@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./WritePost.css";
-import reissueToken from "../../global/reissueToken";
+import ReissueToken from "../../global/ReissueToken";
 
 export default function WritePost(props) {
   const [title, setTitle] = useState("");
@@ -32,7 +32,7 @@ export default function WritePost(props) {
     }).then(res => res.json())
       .then(async (res) => {
         if (res.code === 4010)
-          await reissueToken(handleSubmit);
+          await ReissueToken(handleSubmit);
         navigate(`/post/${res.postId}`);
       });
   };
