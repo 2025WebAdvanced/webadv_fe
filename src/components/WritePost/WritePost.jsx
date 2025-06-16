@@ -33,7 +33,7 @@ export default function WritePost(props) {
       .then(async (res) => {
         if (res.code === 4010)
           await ReissueToken(handleSubmit);
-        navigate(`/post/${res.postId}`);
+        navigate(`/board/${res.postId}`);
       });
   };
 
