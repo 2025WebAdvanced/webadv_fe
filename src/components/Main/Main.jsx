@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Header from '../Header/Header'
-import reissueToken from "../../global/reissueToken";
+import ReissueToken from "../../global/ReissueToken";
 
 export default function Main() {
   const [user, setUser] = useState(null);
@@ -27,8 +27,9 @@ export default function Main() {
               username: res.data.username,
               univ: res.data.univ,
             });
-          else if (res.code === 4010)
-            reissueToken(getUserDetail);
+          else if (res.code === 4010) {
+            ReissueToken(getUserDetail);
+          }
         });
   }
 
