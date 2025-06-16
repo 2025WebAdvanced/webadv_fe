@@ -9,6 +9,10 @@
 
 /* --- 수정/작성 화면 --- */
 
+.disabled {
+  opacity: 0%;
+  margin-top: 50px;
+}
 
 .edit-page-title {
   font-size: 22px;
@@ -26,15 +30,17 @@
 }
 
 .edit-title-input {
-  flex: 1;
-  font-size: 16px;
-  padding: 8px 12px;
-  border: 1.5px solid #000000;
-  border-radius: 6px;
-  background: #ffffff;
+  width: 100%;
+  border: none;
   outline: none;
-  box-sizing: border-box;
-  height: 38px;
+  color: #2d47a6;
+  font-weight: 800;
+}
+
+.edit-underline {
+  height: 1px;
+  background-color: #2b315e;
+  transition: all ease 0.4s;
 }
 
 .save-btn {
@@ -61,7 +67,7 @@
   padding: 7px 32px;
   font-size: 16px;
   font-weight: bold;
-  cursor: not-allowed;
+  cursor: pointer;
   transition: background 0.2s;
 }
 
@@ -71,16 +77,18 @@
 
 .edit-content-input {
   width: 100%;
-  min-height: 500px;
-  font-size: 15px;
-  padding: 12px;
-  border: 1.5px solid #000000;
-  border-radius: 6px;
-  background: #ffffff;
-  box-sizing: border-box;
+  margin-top: 16px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
   resize: none;
+  background: #ffffff;
   margin-bottom: 16px;
   line-height: 1.6;
+}
+
+.edit-content-input:focus {
+  outline: 2px solid #7081c1;
 }
 
 
@@ -206,6 +214,10 @@
   transform: scale(1.1);
 }
 
+.comment-section {
+  transition: all ease 0.3s;
+}
+
 .comment-header {
   display: flex;
   align-items: center;
@@ -225,6 +237,12 @@
 .comment-item {
   padding: 15px 0;
   border-bottom: 1px solid #eee;
+}
+
+.comment-item-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
 .comment-author {
