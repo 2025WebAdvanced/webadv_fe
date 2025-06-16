@@ -22,8 +22,12 @@ export default function List() {
     fetch(`${process.env.REACT_APP_SERVER_URL}/post/list?page=${page}&limit=${limit}`)
       .then((res) => res.json())
       .then((res) => {
-        setPosts(res.data);
-        setLoading(false);
+        if (res.code === 1000) {
+          setPosts(res.data);
+          setLoading(false);
+        } else if (res.code === 4041) {
+          setLoading(false);
+        }
       });
   }, [page]);
 
