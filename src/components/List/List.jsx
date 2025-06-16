@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./List.css";
 import { useNavigate } from "react-router-dom";
+import { sqlDateToRelativeTimeString } from "../../global/SQLDateFormatter";
 
 export default function List() {
   const navigate = useNavigate();
@@ -26,31 +27,6 @@ export default function List() {
       });
   }, [page]);
 
-  const dateParser = (date) => {
-    let year = parseInt(date.substring(0, 4));
-    let month = parseInt(date.substring(5, 7)) - 1;
-    let day = parseInt(date.substring(8, 10));
-    let hour = parseInt(date.substring(11, 13)) + 9;  // 한국 시간 GMT+9
-    let minute = parseInt(date.substring(14, 16));
-    let second = parseInt(date.substring(17, 19));
-
-    const parsedDate = new Date(year, month, day, hour, minute, second);
-    const now = new Date();
-    const diffTime = now.getTime() - parsedDate.getTime();
-
-    if (diffTime / 1000 <= 60)
-      return `${Math.floor(diffTime / 1000)}초 전`;
-    else if (diffTime / (1000 * 60) <= 60)
-      return `${Math.floor(diffTime / (1000 * 60))}분 전`;
-    else if (diffTime / (1000 * 60 * 60) <= 24)
-      return `${Math.floor(diffTime / (1000 * 60 * 60))}시간 전`;
-    else if (parsedDate.getFullYear() === now.getFullYear()) {
-      return `${parsedDate.getMonth() + 1}월 ${parsedDate.getDate()}일`;
-    } else {
-      return `${parsedDate.getFullYear()}.${parsedDate.getMonth() + 1}.${parsedDate.getDate()}`;
-    }
-  }
-
   const postClickHandler = (p) => {
     navigate(`/board/${p.id}`);
   }
@@ -71,7 +47,7 @@ export default function List() {
           <div className="list-row" key={post.id}>
             <div>{post.username}</div>
             <div className="title" onClick={() => { postClickHandler(post) }}>{post.title}</div>
-            <div className="date">{dateParser(post.createdAt)}</div>
+            <div className="date">{sqlDateToRelativeTimeString(post.createdAt)}</div>
             <div>{post.views}</div>
             <div>{post.comments}</div>
           </div>
